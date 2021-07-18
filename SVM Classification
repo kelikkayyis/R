@@ -1,0 +1,28 @@
+rm(list=ls())
+
+setwd("~/_R_Stats/Mastering R - SA/PR3")
+datafh <- read.csv("fetal_health.csv")
+
+dim(datafh)
+str(datafh)
+names(datafh)
+summary(datafh)
+sum(is.na(datafh))
+
+x <- datafh[,-22]
+names(x)
+y <- datafh[22]
+names(y)
+
+y$fetal_health <- as.factor(y$fetal_health)
+str(y)
+
+library(e1071)
+model_fh <- svm(fetal_health~., data = datafh, type = "C-classification")
+summary(model_fh)
+
+pred_fh <- predict(model_fh,x)
+summary(pred_fh)
+
+library(caret)
+confusionMatrix(pred_fh,y$fetal_health)
