@@ -1,0 +1,216 @@
+---
+title: "Iris Aggregate"
+author: "Kelik Isbiyantoro"
+date: "9/8/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+
+# {.tabset}
+
+## Preprosesing
+
+```{r message=FALSE}
+# Library
+library(dplyr)
+library(broom)
+library(purrr)
+library(formattable)
+
+# Set a colors
+customGreen0 = "#DeF7E9"
+customGreen  = "#71CA97"
+
+customBlue0  = "#4E9BC2"
+customBlue   = "#BFDCEA"
+
+# import data
+dt <- iris
+
+# Percentiles calculation
+p <- c(0,.25,.5,.75,1)
+p_names <- paste0(p*100, "%")
+p_funs <- map(p, ~partial(quantile, probs = .x, na.rm = TRUE)) %>% set_names(nm = p_names)
+```
+
+
+## Sepal Length
+
+```{r message=FALSE}
+agg_iris <-  dt %>% group_by(Species) %>% 
+  summarize(Counts = length(Sepal.Length),
+            Min    = min(Sepal.Length),
+            Mean   = mean(Sepal.Length),
+            Median = median(Sepal.Length),
+            Max    = max(Sepal.Length)
+            )
+
+formattable(agg_iris,
+            align = c("l","c","c","c","c","c"), 
+            list(
+              `Species` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")),
+              `Counts`  = color_tile(customGreen, customGreen0),
+              `Min`     = color_tile(customGreen, customGreen0),
+              `Mean`    = color_tile(customGreen, customGreen0),
+              `Median`  = color_tile(customGreen, customGreen0),
+              `Max`     = color_tile(customGreen, customGreen0)
+              )
+            )
+```
+
+
+```{r message=FALSE}
+agg_iris <- dt %>% 
+  group_by(Species) %>% 
+   summarize_at(vars(Sepal.Length), tibble::lst(!!!p_funs))
+
+formattable(agg_iris,
+            align = c("l","c","c","c","c", "c"), 
+            list(
+              `Species` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")),
+              `0%`   = color_tile(customBlue, customBlue0),
+              `25%`  = color_tile(customBlue, customBlue0),
+              `50%`  = color_tile(customBlue, customBlue0),
+              `75%`  = color_tile(customBlue, customBlue0),
+              `100%` = color_tile(customBlue, customBlue0)
+              )
+            )
+```
+
+
+## Sepal Width
+
+```{r message=FALSE}
+agg_iris <-  dt %>% group_by(Species) %>% 
+  summarize(Counts = length(Sepal.Width),
+            Min    = min(Sepal.Width),
+            Mean   = mean(Sepal.Width),
+            Median = median(Sepal.Width),
+            Max    = max(Sepal.Width)
+            )
+
+formattable(agg_iris,
+            align = c("l","c","c","c","c","c"), 
+            list(
+              `Species` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")),
+              `Counts`= color_tile(customGreen, customGreen0),
+              `Min`   = color_tile(customGreen, customGreen0),
+              `Mean`  = color_tile(customGreen, customGreen0),
+              `Median`= color_tile(customGreen, customGreen0),
+              `Max`   = color_tile(customGreen, customGreen0)
+              )
+            )
+```
+
+
+```{r message=FALSE}
+agg_iris <- dt %>% 
+  group_by(Species) %>% 
+   summarize_at(vars(Sepal.Width), tibble::lst(!!!p_funs))
+
+formattable(agg_iris,
+            align = c("l","c","c","c","c", "c"), 
+            list(
+              `Species` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")),
+              `0%`   = color_tile(customBlue, customBlue0),
+              `25%`  = color_tile(customBlue, customBlue0),
+              `50%`  = color_tile(customBlue, customBlue0),
+              `75%`  = color_tile(customBlue, customBlue0),
+              `100%` = color_tile(customBlue, customBlue0)
+              )
+            )
+```
+
+
+
+## Petal Length
+
+```{r message=FALSE}
+agg_iris <-  dt %>% group_by(Species) %>% 
+  summarize(Counts = length(Petal.Length),
+            Min    = min(Petal.Length),
+            Mean   = mean(Petal.Length),
+            Median = median(Petal.Length),
+            Max    = max(Petal.Length)
+            )
+
+formattable(agg_iris,
+            align = c("l","c","c","c","c","c"), 
+            list(
+              `Species` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")),
+              `Counts`= color_tile(customGreen, customGreen0),
+              `Min`   = color_tile(customGreen, customGreen0),
+              `Mean`  = color_tile(customGreen, customGreen0),
+              `Median`= color_tile(customGreen, customGreen0),
+              `Max`   = color_tile(customGreen, customGreen0)
+              )
+            )
+```
+
+
+```{r message=FALSE}
+agg_iris <- dt %>% 
+  group_by(Species) %>% 
+   summarize_at(vars(Petal.Length), tibble::lst(!!!p_funs))
+
+formattable(agg_iris,
+            align = c("l","c","c","c","c", "c"), 
+            list(
+              `Species` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")),
+              `0%`   = color_tile(customBlue, customBlue0),
+              `25%`  = color_tile(customBlue, customBlue0),
+              `50%`  = color_tile(customBlue, customBlue0),
+              `75%`  = color_tile(customBlue, customBlue0),
+              `100%` = color_tile(customBlue, customBlue0)
+              )
+            )
+```
+
+
+## Petal Width
+
+```{r message=FALSE}
+agg_iris <-  dt %>% group_by(Species) %>% 
+  summarize(Counts = length(Petal.Width),
+            Min    = min(Petal.Width),
+            Mean   = mean(Petal.Width),
+            Median = median(Petal.Width),
+            Max    = max(Petal.Width)
+            )
+
+formattable(agg_iris,
+            align = c("l","c","c","c","c","c"), 
+            list(
+              `Species` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")),
+              `Counts`= color_tile(customGreen, customGreen0),
+              `Min`   = color_tile(customGreen, customGreen0),
+              `Mean`  = color_tile(customGreen, customGreen0),
+              `Median`= color_tile(customGreen, customGreen0),
+              `Max`   = color_tile(customGreen, customGreen0)
+              )
+            )
+```
+
+
+```{r message=FALSE}
+agg_iris <- dt %>% 
+  group_by(Species) %>% 
+   summarize_at(vars(Petal.Width), tibble::lst(!!!p_funs))
+
+formattable(agg_iris,
+            align = c("l","c","c","c","c", "c"), 
+            list(
+              `Species` = formatter("span", style = ~ style(color = "grey",font.weight = "bold")),
+              `0%`   = color_tile(customBlue, customBlue0),
+              `25%`  = color_tile(customBlue, customBlue0),
+              `50%`  = color_tile(customBlue, customBlue0),
+              `75%`  = color_tile(customBlue, customBlue0),
+              `100%` = color_tile(customBlue, customBlue0)
+              )
+            )
+```
+
